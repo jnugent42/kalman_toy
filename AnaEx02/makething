@@ -1,0 +1,1 @@
+cmake3 -DGeant4_DIR=/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/geant4-build/ /data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/geant4.10.01.p03/examples/extended/analysis/AnaEx02
