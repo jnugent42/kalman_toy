@@ -34,6 +34,7 @@
 #include "G4ThreeVector.hh"
 #include "G4SDManager.hh"
 #include "G4ios.hh"
+#include "B4cCalorHit.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -85,8 +86,9 @@ G4bool B4cCalorimeterSD::ProcessHits(G4Step* step,
   G4double edep = step->GetTotalEnergyDeposit();
 /* G4cout << step->GetTrack()->GetPosition()[0] << G4endl; */
   position = step->GetTrack()->GetPosition(); 
+  G4int parent = step->GetTrack()->GetParentID(); 
 
-  
+  if (parent==0){
   // step length
   G4double stepLength = 0.;
   if ( step->GetTrack()->GetDefinition()->GetPDGCharge() != 0. ) {
@@ -118,7 +120,8 @@ G4bool B4cCalorimeterSD::ProcessHits(G4Step* step,
   hit->Add(edep, stepLength);
   hitTotal->Add(edep, stepLength); 
   hit->SetPosition(position);
-      
+  hit->SetParentID(parent);
+  }   
   return true;
 }
 

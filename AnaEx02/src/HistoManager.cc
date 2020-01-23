@@ -83,9 +83,9 @@ void HistoManager::book()
    return;
  }
    
- fHisto[1] = new TH1D("1", "posx", 100, -100., 100);
+ fHisto[1] = new TH1D("1", "posx", 1000, -2000., 2000);
  if (!fHisto[1]) G4cout << "\n can't create histo 1" << G4endl;
- fHisto[2] = new TH1D("2", "posy", 100, -40., 40);
+ fHisto[2] = new TH1D("2", "posy", 100, 0., 1100);
  if (!fHisto[2]) G4cout << "\n can't create histo 2" << G4endl;
  fHisto[3] = new TH1D("3", "posz", 100, -40., 40);
  if (!fHisto[3]) G4cout << "\n can't create histo 3" << G4endl;
@@ -138,7 +138,7 @@ void HistoManager::FillHisto(G4int ih, G4double xbin, G4double weight)
            << G4endl;
     return;
   }
- if  (fHisto[ih]) { fHisto[ih]->Fill(xbin, weight); }
+ if  (fHisto[ih] && xbin!=0) { fHisto[ih]->Fill(xbin, weight); }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -171,25 +171,32 @@ void HistoManager::FillNtuple(G4double energyAbs, G4double energyGap,
 
 void HistoManager::FillNtuple2(std::vector<float>* posx, std::vector<float>* posy, std::vector<float>* posz)
 {
-        G4cout << "posx.size " << posx->at(5) << G4endl;     
+        /* G4cout << "posx.size " << posx->at(5) << G4endl; */     
         /* _posx.assign(0,2); */
         /* G4cout << "posx->size " << posx->size() << G4endl; */     
  for(int i=0;i<posx->size();i++){
      if (posx->at(i)!=0) _posx->push_back(posx->at(i));
-        /* G4cout << "_posx->at(i) " << _posx->at(i) << G4endl; */     
+     if (posx->at(i)!=0) G4cout << "_posx->at(i) " << _posx->at(i) << G4endl;     
+     /* _posx->push_back(posx->at(i)); */
+     /* G4cout << "_posx->at(i) " << _posx->at(i) << G4endl; */     
 }
  for(int i=0;i<posy->size();i++){
- if (posy->at(i)!=0) _posy->push_back(posy->at(i));
+  _posy->push_back(posy->at(i));
+     G4cout << "_posy->at(i) " << _posy->at(i) << G4endl;     
 }
  for(int i=0;i<posz->size();i++){
- if (posz->at(i)!=0) _posz->push_back(posz->at(i));
+ _posz->push_back(posz->at(i));
+     G4cout << "_posz->at(i) " << _posz->at(i) << G4endl;     
 }
+ /* for(int i=0;i<posx->size();i++){ */
+ /*     G4cout << "XYZ " << _posx->at(i) << " " << _posy->at(i) << " " << _posz->at(i) << G4endl; */     
+/* } */
 
   if (fNtuple3) fNtuple3->Fill();
   fNtuple3->Print();
   fNtuple3->Show(0);
-  fNtuple3->GetEntry(0);
-  G4cout << "_posx.size " << _posx->at(0) << G4endl;     
+  /* fNtuple3->GetEntry(0); */
+  /* G4cout << "_posx.size " << _posx->at(0) << G4endl; */     
  _posx->clear();
  _posy->clear();
  _posz->clear();

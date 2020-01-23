@@ -40,6 +40,8 @@
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
 #include "B4cCalorimeterSD.hh"
+#include "G4Cache.hh"
+#include "F03FieldSetup.hh"
 
 class G4Box;
 class G4LogicalVolume;
@@ -60,6 +62,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
   public:
      
      void SetAbsorberMaterial (G4String);     
+     void SetAbsorber2Material (G4String);     
      void SetAbsorberThickness(G4double);     
 
      void SetGapMaterial (G4String);     
@@ -95,9 +98,13 @@ class DetectorConstruction : public G4VUserDetectorConstruction
                  
   private:
      
+     G4Cache<F03FieldSetup*>    fEmFieldSetup;
      G4Material*        fAbsorberMaterial;
      G4double           fAbsorberThickness;
      
+     G4Material*        fAbsorber2Material;
+     G4double           fAbsorber2Thickness;
+
      G4Material*        fGapMaterial;
      G4double           fGapThickness;
      
@@ -127,6 +134,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction
      G4LogicalVolume*   fLogicAbsorber; //pointer to the logical Absorber
      G4VPhysicalVolume* fPhysiAbsorber; //pointer to the physical Absorber
      
+     G4Box*             fSolidAbsorber2; //pointer to the solid Absorber
+     G4LogicalVolume*   fLogicAbsorber2; //pointer to the logical Absorber
+     G4VPhysicalVolume* fPhysiAbsorber2; //pointer to the physical Absorber
+
      G4Box*             fSolidGap;      //pointer to the solid Gap
      G4LogicalVolume*   fLogicGap;      //pointer to the logical Gap
      G4VPhysicalVolume* fPhysiGap;      //pointer to the physical Gap
@@ -146,7 +157,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 inline void DetectorConstruction::ComputeCalorParameters()
 {
   // Compute derived parameters of the calorimeter
-     fLayerThickness = fAbsorberThickness + fGapThickness;
+     fLayerThickness = fAbsorberThickness + fAbsorber2Thickness + fGapThickness;
      fCalorThickness = fNbOfLayers*fLayerThickness;
      
      fWorldSizeX = 1.2*fCalorThickness; fWorldSizeYZ = 1.2*fCalorSizeYZ;

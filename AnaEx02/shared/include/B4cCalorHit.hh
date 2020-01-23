@@ -64,18 +64,21 @@ class B4cCalorHit : public G4VHit
     // methods to handle data
     void Add(G4double de, G4double dl);
     void SetPosition(G4ThreeVector position);
+    void SetParentID(G4int parent);
 
     // get methods
     G4double GetEdep() const;
     G4double GetTrackLength() const;
     G4ThreeVector GetPosition() const;
     G4ThreeVector GetMomentum() const;
+    G4int GetParentID() const;
       
   private:
     G4double fEdep;        ///< Energy deposit in the sensitive volume
     G4double fTrackLength; ///< Track length in the  sensitive volume
     G4ThreeVector fposition; ///< Track length in the  sensitive volume
     G4ThreeVector fmomentum; ///< Track length in the  sensitive volume
+    G4int fparent; ///< Track length in the  sensitive volume
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -119,8 +122,16 @@ inline G4ThreeVector B4cCalorHit::GetPosition() const {
   return fposition; 
 }
 
+inline G4int B4cCalorHit::GetParentID() const { 
+  return fparent; 
+}
+
 inline void B4cCalorHit::SetPosition(G4ThreeVector position) { 
   fposition = position; 
+}
+
+inline void B4cCalorHit::SetParentID(G4int parent) { 
+  fparent = parent; 
 }
 
 inline G4ThreeVector B4cCalorHit::GetMomentum() const { 

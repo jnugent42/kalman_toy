@@ -6,6 +6,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/AnaEx02.dir/shared/src/DetectorConstruction.cc.o"
   "CMakeFiles/AnaEx02.dir/shared/src/DetectorMessenger.cc.o"
   "CMakeFiles/AnaEx02.dir/shared/src/EventAction.cc.o"
+  "CMakeFiles/AnaEx02.dir/shared/src/F03FieldMessenger.cc.o"
+  "CMakeFiles/AnaEx02.dir/shared/src/F03FieldSetup.cc.o"
   "CMakeFiles/AnaEx02.dir/shared/src/PrimaryGeneratorAction.cc.o"
   "CMakeFiles/AnaEx02.dir/shared/src/RunAction.cc.o"
   "CMakeFiles/AnaEx02.dir/shared/src/SteppingAction.cc.o"

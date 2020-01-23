@@ -212,8 +212,8 @@ GCCXML:FILEPATH=GCCXML-NOTFOUND
 //Path to a program.
 GENREFLEX_EXECUTABLE:FILEPATH=/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/root-6.12.06/builddir/bin/genreflex
 
-//No help, variable specified on the command line.
-Geant4_DIR:UNINITIALIZED=/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/geant4-build/
+//The directory containing a CMake configuration file for Geant4.
+Geant4_DIR:PATH=/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/geant4-install/lib64/Geant4-10.1.3
 
 //Path to a program.
 ROOTCINT_EXECUTABLE:FILEPATH=/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/root-6.12.06/builddir/bin/rootcint
@@ -236,9 +236,9 @@ CMAKE_CACHEFILE_DIR:INTERNAL=/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/thir
 //Major version of cmake used to create the current loaded cache
 CMAKE_CACHE_MAJOR_VERSION:INTERNAL=3
 //Minor version of cmake used to create the current loaded cache
-CMAKE_CACHE_MINOR_VERSION:INTERNAL=13
+CMAKE_CACHE_MINOR_VERSION:INTERNAL=14
 //Patch version of cmake used to create the current loaded cache
-CMAKE_CACHE_PATCH_VERSION:INTERNAL=4
+CMAKE_CACHE_PATCH_VERSION:INTERNAL=6
 //ADVANCED property for variable: CMAKE_COLOR_MAKEFILE
 CMAKE_COLOR_MAKEFILE-ADVANCED:INTERNAL=1
 //Path to CMake executable.

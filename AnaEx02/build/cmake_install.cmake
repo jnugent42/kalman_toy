@@ -49,7 +49,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/AnaEx02")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/AnaEx02"
-         OLD_RPATH "/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/geant4-build/outputs/library/Linux-g++:/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/xerces-c-3.2.2/src/.libs:/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/libexpat-R_2_2_6/expat/lib/.libs:"
+         OLD_RPATH "/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/geant4-install/lib64:/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/xerces-c-3.2.2/src/.libs:/data/neutrino02/jnugent/newsaroman/NewSaRoMaN/third_party/libexpat-R_2_2_6/expat/lib/.libs:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/AnaEx02")

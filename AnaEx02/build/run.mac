@@ -10,12 +10,13 @@
 /event/verbose 0
 /tracking/verbose 0
 #
-#
-# Magnetic field
-# 
-/globalField/setValue 0 0 2 tesla
-/run/beamOn 1
-
+#/globalField/setValue 0 0 1.5 T
+#/field/setStepperType 4
+#/field/setMaxStep 0.1 mm
+/vis/filtering/trajectories/create/particleFilter
+/vis/filtering/trajectories/particleFilter-0/add mu-
 /gun/particle mu-
-/gun/energy 500 MeV
-/run/beamOn 100
+#/gun/energy 2.002754353 GeV
+#/gun/momentumAmp 2 GeV
+/gun/momentum 2 0 0 GeV
+/run/beamOn 1000

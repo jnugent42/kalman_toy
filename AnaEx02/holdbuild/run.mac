@@ -1,0 +1,53 @@
+# $Id: run.mac 48195 2011-02-02 15:33:39Z jjacquem $
+#
+# Macro file for "AnaEx01.cc"
+# 
+# can be run in batch, without graphic
+# or interactively: Idle> /control/execute run.mac
+#
+/control/verbose 2
+/run/verbose 2
+/event/verbose 0
+/tracking/verbose 0
+#
+#
+# Magnetic field
+# 
+#/globalField/setValue 0 0 2 tesla
+/field/setStepperType 4
+/field/setMinStep 0.010 mm
+/field/setFieldZ 0.200 tesla
+/run/beamOn 1
+
+#/vis/open VRML2FILE
+
+/gun/particle mu-
+/gun/energy 1 GeV
+
+
+#/vis/filtering/trajectories/particleFilter-0/active true
+
+#/vis/open HepRepFile
+#/vis/drawVolume
+#/vis/scene/add/trajectories
+#/vis/filtering/trajectories/create/originVolumeFilter
+#/vis/filtering/trajectories/originVolumeFilter-0/add firstArmPhysical
+#/run/beamOn 1
+
+/vis/open HepRepFile
+/vis/drawVolume
+/vis/scene/add/trajectories
+/vis/filtering/trajectories/create/particleFilter
+/vis/filtering/trajectories/particleFilter-0/add mu-
+/vis/filtering/trajectories/particleFilter-0/invert true
+/vis/filtering/trajectories/particleFilter-0/verbose true
+
+/run/beamOn 1
+
+/vis/open HepRepFile
+/vis/drawVolume
+/vis/scene/add/trajectories
+/vis/filtering/trajectories/create/particleFilter
+/vis/filtering/trajectories/particleFilter-0/add mu-
+/vis/filtering/trajectories/particleFilter-0/invert true
+/vis/filtering/trajectories/particleFilter-0/verbose true

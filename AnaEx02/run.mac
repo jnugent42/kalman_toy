@@ -7,8 +7,8 @@
 #
 /control/verbose 2
 /run/verbose 2
-/event/verbose 0
-/tracking/verbose 0
+#/event/verbose 0
+#/tracking/verbose 0
 #
 /gun/particle e-
 /gun/energy 500 MeV

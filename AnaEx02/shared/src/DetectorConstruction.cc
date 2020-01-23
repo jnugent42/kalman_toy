@@ -52,11 +52,18 @@
 #include "G4AutoDelete.hh"
 #include "G4SolidStore.hh"
 
+#include "F03FieldSetup.hh"
+#include "F03FieldMessenger.hh"
+
 #include "G4VisAttributes.hh"
 #include "G4Colour.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4RunManager.hh"
 #include "B4cCalorimeterSD.hh"
+#include "G4FieldManager.hh"
+#include "G4TransportationManager.hh"
+#include "G4ChordFinder.hh"
+#include <iostream>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -73,18 +80,24 @@ DetectorConstruction::DetectorConstruction()
  fSolidLayer(0),fLogicLayer(0),fPhysiLayer(0),
  fSolidAbsorber(0),fLogicAbsorber(0),fPhysiAbsorber(0),
  fSolidGap (0),fLogicGap (0),fPhysiGap (0),
- fDetectorMessenger(0)
+ fDetectorMessenger(0),
+ fSolidAbsorber2(0),fLogicAbsorber2(0),fPhysiAbsorber2(0), fAbsorber2Material(0)
 {
   // default parameter values of the calorimeter
-  fAbsorberThickness = 1.*mm;
-  fGapThickness      =  20.*mm;
-  fNbOfLayers        = 10;
-  fCalorSizeYZ       = 10.*cm;
+  fAbsorberThickness = 20.*mm;
+  fAbsorber2Thickness = 20.*mm;
+  fGapThickness      = 200.*mm;
+  fNbOfLayers        = 20;
+  fCalorSizeYZ       = 200.*cm;
+  fWorldSizeX       = 10000.*cm;
+  fWorldSizeYZ       = 10000.*cm;
+  fCalorThickness       = 5000.*cm;
   ComputeCalorParameters();
   
   // materials
   DefineMaterials();
   SetAbsorberMaterial("G4_POLYPROPYLENE");
+  SetAbsorber2Material("G4_Fe");
   SetGapMaterial("G4_AIR");
   
   // create commands for interactive definition of the calorimeter
@@ -110,9 +123,13 @@ void DetectorConstruction::DefineMaterials()
 // use G4-NIST materials data base
 //
 G4NistManager* man = G4NistManager::Instance();
-fDefaultMaterial = man->FindOrBuildMaterial("G4_Galactic");
+fDefaultMaterial = man->FindOrBuildMaterial("G4_AIR");
 man->FindOrBuildMaterial("G4_Pb");
+man->FindOrBuildMaterial("G4_Fe");
 man->FindOrBuildMaterial("G4_lAr");
+man->FindOrBuildMaterial("G4_Galactic");
+man->FindOrBuildMaterial("G4_POLYPROPYLENE");
+man->FindOrBuildMaterial("G4_AIR");
 
 // print table
 //
@@ -211,10 +228,10 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
                           
       fLogicAbsorber = new G4LogicalVolume(fSolidAbsorber,    //its solid
                                             fAbsorberMaterial, //its material
-                                            fAbsorberMaterial->GetName());//name
+                                            "poly");//fAbsorberMaterial->GetName());//name
                                                 
       fPhysiAbsorber = new G4PVPlacement(0,                   //no rotation
-                          G4ThreeVector(-fGapThickness/2,0.,0.),  //its position
+                          G4ThreeVector(-fGapThickness/2-fAbsorberThickness/2,0.,0.),  //its position
                                         fLogicAbsorber,     //its logical volume
                                         fAbsorberMaterial->GetName(), //its name
                                         fLogicLayer,          //its mother
@@ -222,13 +239,29 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
                                         0);                   //copy number
                                         
     }
- 
-    /* const G4String* a; */
-    /* const G4String* b; */ 
-    /* G4int* c; */
-    /* B4cCalorimeterSD* absoSD = new B4cCalorimeterSD(*a, *b, *c); */
-    /*   /1* = new B4cCalorimeterSD("AbsorberSD", "AbsorberHitsCollection", fNbOfLayers); *1/ */
-    /* SetSensitiveDetector("AbsoLV",absoSD); */ 
+  
+  //                               
+  // Absorber 2
+  //
+  fSolidAbsorber2=0; fLogicAbsorber2=0; fPhysiAbsorber2=0;  
+  
+  if (fAbsorber2Thickness > 0.) 
+    { fSolidAbsorber2 = new G4Box("Absorber2",                //its name
+                          fAbsorber2Thickness/2,fCalorSizeYZ/2,fCalorSizeYZ/2); 
+                          
+      fLogicAbsorber2 = new G4LogicalVolume(fSolidAbsorber2,    //its solid
+                                            fAbsorber2Material, //its material
+                                            "iron");//fAbsorber2Material->GetName());//name
+                                                
+      fPhysiAbsorber2 = new G4PVPlacement(0,                   //no rotation
+                          G4ThreeVector(fGapThickness/2+fAbsorber2Thickness/2,0.,0.),  //its position
+                                        fLogicAbsorber2,     //its logical volume
+                                        fAbsorber2Material->GetName(), //its name
+                                        fLogicLayer,          //its mother
+                                        false,               //no boulean operat
+                                        0);                   //copy number
+                                        
+    }
   //                                 
   // Gap
   //
@@ -243,7 +276,8 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
                                            fGapMaterial->GetName());
                                            
       fPhysiGap = new G4PVPlacement(0,                      //no rotation
-               G4ThreeVector(fAbsorberThickness/2,0.,0.),   //its position
+               G4ThreeVector(0,0.,0.),   //its position
+               /* G4ThreeVector(fAbsorberThickness/2,0.,0.),   //its position */
                                    fLogicGap,               //its logical volume
                                    fGapMaterial->GetName(), //its name
                                    fLogicLayer,             //its mother
@@ -300,6 +334,21 @@ void DetectorConstruction::SetAbsorberMaterial(G4String materialChoice)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+void DetectorConstruction::SetAbsorber2Material(G4String materialChoice)
+{
+  // search the material by its name   
+  G4Material* pttoMaterial =
+  G4NistManager::Instance()->FindOrBuildMaterial(materialChoice);      
+  if (pttoMaterial)
+  {
+      fAbsorber2Material = pttoMaterial;
+      if ( fLogicAbsorber2 )
+      {
+          fLogicAbsorber2->SetMaterial(fAbsorber2Material);
+          G4RunManager::GetRunManager()->PhysicsHasBeenModified();
+      }
+  }
+}
 void DetectorConstruction::SetGapMaterial(G4String materialChoice)
 {
   // search the material by its name
@@ -361,18 +410,49 @@ void DetectorConstruction::ConstructSDandField()
     // Sensitive detectors
     //
     B4cCalorimeterSD* absoSD = new B4cCalorimeterSD("AbsorberSD", "AbsorberHitsCollection", fNbOfLayers); 
-    SetSensitiveDetector(fAbsorberMaterial->GetName(),absoSD); 
+    /* SetSensitiveDetector(fAbsorberMaterial->GetName(),absoSD); */ 
+    SetSensitiveDetector("poly",absoSD); 
   
+    /* G4UniformMagField* magField = new G4UniformMagField( G4ThreeVector( 0.0, 0.0, 1.5*tesla  )  ); */
+    /* G4FieldManager* fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager(); */
+    /* fieldMgr->SetDetectorField( magField  ); */
+    /* fieldMgr->CreateChordFinder( magField  ); */   
+    /* G4cout << fieldMgr->GetChordFinder()->GetDeltaChord() << G4endl; */
+    /* fieldMgr->GetChordFinder()->SetDeltaChord( 0.00001 ); */
+    /*   fieldMgr->SetMinimumEpsilonStep( 1.0e-18  ); */
+    /*   fieldMgr->SetAccuraciesWithDeltaOneStep(0.5e-15); */ 
+    /*       fieldMgr->SetDeltaIntersection(0.5e-15*mm); */
+    /*     fieldMgr->SetMaximumEpsilonStep( 1.0e-17  ); */
+    /*       fieldMgr->SetDeltaOneStep( 0.5e-15 * mm  );  // 0.5 micrometer */
+    /*   fieldMgr->SetFieldChangesEnergy(false); */
     // 
     // Magnetic field
     //
     // Create global magnetic field messenger.
     // Uniform magnetic field is then created automatically if
     // the field value is not zero.
-    G4ThreeVector fieldValue = G4ThreeVector();
-    fMagFieldMessenger = new G4GlobalMagFieldMessenger(fieldValue);
-    fMagFieldMessenger->SetVerboseLevel(1);
+    /* G4ThreeVector fieldValue = G4ThreeVector(); */
+    /* fMagFieldMessenger = new G4GlobalMagFieldMessenger(fieldValue); */
+    /* fMagFieldMessenger->SetVerboseLevel(1); */
   
     // Register the field messenger for deleting
-    G4AutoDelete::Register(fMagFieldMessenger);
+    /* G4AutoDelete::Register(fMagFieldMessenger); */
+
+   // Construct the field creator - this will register the field it creates
+ 
+   if (!fEmFieldSetup.Get()) {
+     F03FieldSetup* emFieldSetup = new F03FieldSetup();
+ 
+     fEmFieldSetup.Put(emFieldSetup);
+     G4AutoDelete::Register(emFieldSetup); //Kernel will delete the messenger
+   }
+   // Set local field manager and local field in radiator and its daughters:
+   G4bool allLocal = false;
+
+   fLogicAbsorber2->SetFieldManager(fEmFieldSetup.Get()->GetLocalFieldManager(),
+                                   allLocal );
+   /* fLogicCalor->SetFieldManager(fEmFieldSetup.Get()->GetLocalFieldManager(), */
+                                   /* allLocal ); */
+
+
   }
