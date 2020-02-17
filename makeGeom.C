@@ -72,7 +72,7 @@ void makeGeom()
    for (int i=0; i<20; ++i){
      TGeoVolume *blueBullCan = gGeoManager->MakeBox("blueBullCan", iron, thickness, 100, 100);//, 90., 270.);
      blueBullCan->SetLineColor(kBlue);
-     top->AddNode(blueBullCan, i, new TGeoTranslation(-218+(distance*i),0,0));
+     top->AddNode(blueBullCan, i, new TGeoTranslation(-217+(distance*i),0,0));
    }
 
 
