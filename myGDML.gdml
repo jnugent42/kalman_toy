@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+
+  <define/>
+
+  <materials>
+    <isotope N="12" Z="6" name="C120x10732c0">
+      <atom unit="g/mole" value="12"/>
+    </isotope>
+    <isotope N="13" Z="6" name="C130x1073370">
+      <atom unit="g/mole" value="13.0034"/>
+    </isotope>
+    <element name="C0x1073060">
+      <fraction n="0.9893" ref="C120x10732c0"/>
+      <fraction n="0.0107" ref="C130x1073370"/>
+    </element>
+    <isotope N="1" Z="1" name="H10x107ec00">
+      <atom unit="g/mole" value="1.00782503081372"/>
+    </isotope>
+    <isotope N="2" Z="1" name="H20x107f2d0">
+      <atom unit="g/mole" value="2.01410199966617"/>
+    </isotope>
+    <element name="H0x107f070">
+      <fraction n="0.999885" ref="H10x107ec00"/>
+      <fraction n="0.000115" ref="H20x107f2d0"/>
+    </element>
+    <material name="G4_POLYPROPYLENE0x107fac0" state="solid">
+      <T unit="K" value="293.15"/>
+      <MEE unit="eV" value="56.5"/>
+      <D unit="g/cm3" value="0.9"/>
+      <fraction n="0.856281712255198" ref="C0x1073060"/>
+      <fraction n="0.143718287744802" ref="H0x107f070"/>
+    </material>
+    <isotope N="54" Z="26" name="Fe540x107b400">
+      <atom unit="g/mole" value="53.9396"/>
+    </isotope>
+    <isotope N="56" Z="26" name="Fe560x107b470">
+      <atom unit="g/mole" value="55.9349"/>
+    </isotope>
+    <isotope N="57" Z="26" name="Fe570x107e950">
+      <atom unit="g/mole" value="56.9354"/>
+    </isotope>
+    <isotope N="58" Z="26" name="Fe580x107e9f0">
+      <atom unit="g/mole" value="57.9333"/>
+    </isotope>
+    <element name="Fe0x107e6f0">
+      <fraction n="0.05845" ref="Fe540x107b400"/>
+      <fraction n="0.91754" ref="Fe560x107b470"/>
+      <fraction n="0.02119" ref="Fe570x107e950"/>
+      <fraction n="0.00282" ref="Fe580x107e9f0"/>
+    </element>
+    <material name="G4_Fe0x107b2d0" state="solid">
+      <T unit="K" value="293.15"/>
+      <MEE unit="eV" value="286"/>
+      <D unit="g/cm3" value="7.874"/>
+      <fraction n="1" ref="Fe0x107e6f0"/>
+    </material>
+    <isotope N="14" Z="7" name="N140x1073600">
+      <atom unit="g/mole" value="14.0031"/>
+    </isotope>
+    <isotope N="15" Z="7" name="N150x10736a0">
+      <atom unit="g/mole" value="15.0001"/>
+    </isotope>
+    <element name="N0x10733d0">
+      <fraction n="0.99632" ref="N140x1073600"/>
+      <fraction n="0.00368" ref="N150x10736a0"/>
+    </element>
+    <isotope N="16" Z="8" name="O160x10735c0">
+      <atom unit="g/mole" value="15.9949"/>
+    </isotope>
+    <isotope N="17" Z="8" name="O170x1073980">
+      <atom unit="g/mole" value="16.9991"/>
+    </isotope>
+    <isotope N="18" Z="8" name="O180x1073a10">
+      <atom unit="g/mole" value="17.9992"/>
+    </isotope>
+    <element name="O0x1073700">
+      <fraction n="0.99757" ref="O160x10735c0"/>
+      <fraction n="0.00038" ref="O170x1073980"/>
+      <fraction n="0.00205" ref="O180x1073a10"/>
+    </element>
+    <isotope N="36" Z="18" name="Ar360x10738b0">
+      <atom unit="g/mole" value="35.9675"/>
+    </isotope>
+    <isotope N="38" Z="18" name="Ar380x1073ce0">
+      <atom unit="g/mole" value="37.9627"/>
+    </isotope>
+    <isotope N="40" Z="18" name="Ar400x1073de0">
+      <atom unit="g/mole" value="39.9624"/>
+    </isotope>
+    <element name="Ar0x1073a80">
+      <fraction n="0.003365" ref="Ar360x10738b0"/>
+      <fraction n="0.000632" ref="Ar380x1073ce0"/>
+      <fraction n="0.996003" ref="Ar400x1073de0"/>
+    </element>
+    <material name="G4_AIR0x1072f30" state="gas">
+      <T unit="K" value="293.15"/>
+      <MEE unit="eV" value="85.7"/>
+      <D unit="g/cm3" value="0.00120479"/>
+      <fraction n="0.000124000124000124" ref="C0x1073060"/>
+      <fraction n="0.755267755267755" ref="N0x10733d0"/>
+      <fraction n="0.231781231781232" ref="O0x1073700"/>
+      <fraction n="0.0128270128270128" ref="Ar0x1073a80"/>
+    </material>
+  </materials>
+
+  <solids>
+    <box lunit="mm" name="Absorber0x11bfc60" x="20" y="2000" z="2000"/>
+    <box lunit="mm" name="Absorber20x11bfe00" x="20" y="2000" z="2000"/>
+    <box lunit="mm" name="Gap0x11bffa0" x="200" y="2000" z="2000"/>
+    <box lunit="mm" name="Layer0x11bf260" x="240" y="2000" z="2000"/>
+    <box lunit="mm" name="Calorimeter0x11bf0b0" x="4800" y="2000" z="2000"/>
+    <box lunit="mm" name="World0x11bef70" x="5760" y="2400" z="2400"/>
+  </solids>
+
+  <structure>
+    <volume name="poly0x11bfcf0">
+      <materialref ref="G4_POLYPROPYLENE0x107fac0"/>
+      <solidref ref="Absorber0x11bfc60"/>
+    </volume>
+    <volume name="iron0x11bfe90">
+      <materialref ref="G4_Fe0x107b2d0"/>
+      <solidref ref="Absorber20x11bfe00"/>
+    </volume>
+    <volume name="G4_AIR0x11c0000">
+      <materialref ref="G4_AIR0x1072f30"/>
+      <solidref ref="Gap0x11bffa0"/>
+    </volume>
+    <volume name="Layer0x11bf2f0">
+      <materialref ref="G4_AIR0x1072f30"/>
+      <solidref ref="Layer0x11bf260"/>
+      <physvol name="G4_POLYPROPYLENE0x11bfd70">
+        <volumeref ref="poly0x11bfcf0"/>
+        <position name="G4_POLYPROPYLENE0x11bfd70_pos" unit="mm" x="-110" y="0" z="0"/>
+      </physvol>
+      <physvol name="G4_Fe0x11bff10">
+        <volumeref ref="iron0x11bfe90"/>
+        <position name="G4_Fe0x11bff10_pos" unit="mm" x="110" y="0" z="0"/>
+      </physvol>
+      <physvol name="G4_AIR0x11c0080">
+        <volumeref ref="G4_AIR0x11c0000"/>
+      </physvol>
+    </volume>
+    <volume name="Calorimeter0x11bf140">
+      <materialref ref="G4_AIR0x1072f30"/>
+      <solidref ref="Calorimeter0x11bf0b0"/>
+      <replicavol number="20">
+        <volumeref ref="Layer0x11bf2f0"/>
+        <replicate_along_axis>
+          <direction x="1"/>
+          <width unit="mm" value="240"/>
+          <offset unit="mm" value="0"/>
+        </replicate_along_axis>
+      </replicavol>
+    </volume>
+    <volume name="World0x11bf000">
+      <materialref ref="G4_AIR0x1072f30"/>
+      <solidref ref="World0x11bef70"/>
+      <physvol name="Calorimeter0x11bf1f0">
+        <volumeref ref="Calorimeter0x11bf140"/>
+      </physvol>
+    </volume>
+  </structure>
+
+  <setup name="Default" version="1.0">
+    <world ref="World0x11bf000"/>
+  </setup>
+
+</gdml>
