@@ -68,16 +68,13 @@ int main() {
   double posX, posY, posZ;
   std::string hold = "b";
   std::string hold2 = "r";
-  float zzz = -240;
+  float zzz = -250;
   while (zzz<240){
       std::string name3(1, gGeoManager->FindNode(zzz,0,0)->GetName()[0]);
-      /* std::string name4(1, gGeoManager->FindNode(zzz,0,0)->GetMedium()->GetMaterial()); */
-      /* gGeoManager->FindNode(zzz,0,0)->GetMedium()->GetMaterial()->GetElement()[0]->Print(); */
-      gGeoManager->FindNode(zzz,0,0)->PrintCandidates();
+      std::cout << zzz << std::endl;
+      /* gGeoManager->FindNode(zzz,0,0)->GetMedium()->GetMaterial()->Print(); */
       /* if (name3.c_str()==hold || name3.c_str()==hold2){ */
-          std::cout << zzz << std::endl;
-          std::cout << name3.c_str() << std::endl;
-
+      std::cout << name3.c_str() << std::endl;
       /* } */
       zzz += 1;
   }
@@ -101,6 +98,7 @@ int main() {
 
 
   TH1D* residual = new TH1D("residual", "residual", 99, -2, 2);
+  TH1D* chiplot = new TH1D("chiplot", "chiplot", 100, 0, 50);
   TFile *inFile=new TFile("AnaEx02.root","READONLY");
   TTree *tree=(TTree*)inFile->Get("103");
   std::vector<float> *_posx = new std::vector<float>;
@@ -134,7 +132,7 @@ int main() {
       unsigned int nMeasurements = 2; //gRandom->Uniform(5, 15);
 
       // covariance
-      double resolution = 0.001;
+      double resolution = 0.01;
       TMatrixDSym cov(3);
       for (int i = 0; i < 3; ++i)
           cov(i,i) = resolution*resolution;
@@ -143,26 +141,18 @@ int main() {
       size = _posx->size();
       std::cout << "size " << size << std::endl;
       if (size>0){
-      /* if (size>5){ */
+          /* if (size>5){ */
           for (int i=size; i>0; --i) {
-          /* for (unsigned int i=0; i<size; ++i) { */
+              /* for (unsigned int i=0; i<size; ++i) { */
               // "simulate" the detector
-              float diff = 1;
               TVector3 currentPoshelix;
               TVector3 currentPos;
-              float X = i*22; 
               std::cout << "start pos geant " << _posx->at(i-1)/10 << " " << _posy->at(i-1)/10 << " " << _posz->at(i-1)/10 << std::endl;
+              float X = i*22; 
               currentPoshelix = helix->getPos(X);
-              if (i==0) {
-                  currentPos.SetX(_posx->at(i-1)/10);
-                  currentPos.SetY(_posy->at(i-1)/10);
-                  currentPos.SetZ(_posz->at(i-1)/10);
-              }
-              else {
-                  currentPos.SetX((_posx->at(i-1)/10));
-                  currentPos.SetY(_posy->at(i-1)/10);
-                  currentPos.SetZ(_posz->at(i-1)/10);
-              }
+              currentPos.SetX(_posx->at(i-1)/10);
+              currentPos.SetY(_posy->at(i-1)/10);
+              currentPos.SetZ(_posz->at(i-1)/10);
               /* currentPos.SetX(gRandom->Gaus(currentPos.X(), resolution)); */
               /* currentPos.SetY(gRandom->Gaus(currentPos.Y(), resolution)); */
               /* currentPos.SetZ(gRandom->Gaus(currentPos.Z(), resolution)); */
@@ -202,7 +192,7 @@ int main() {
 
 
           // set start values and pdg to cand
-          myCand.setPosMomSeedAndPdgCode(posM, momM*2, pdg);
+          myCand.setPosMomSeedAndPdgCode(posM, momM, pdg);
           myCand.setCovSeed(covSeed);
 
 
@@ -226,7 +216,27 @@ int main() {
           fitTrack.getFittedState().getPosMomCov(pos2,mom2,cov2);
           fitTrack.checkConsistency();
           fitTrack.getFittedState().Print();
-
+          // get fitted state - probably at the last detector layer
+          genfit::StateOnPlane mystate = fitTrack.getFittedState();
+          // > 
+          // > // print position/momentum before extrapolation
+          TVector3 Pos = mystate.getPos();
+          Pos.Print();
+          mom2 = fitTrack.getCardinalRep()->getMom(mystate);
+          mom2.Print();
+          // > 
+          // > // extrapolate to the first layer:
+          TVector3 fPos((_posx->at(0)/10), _posy->at(0)/10, _posz->at(0)/10);
+          /* TVector3 fPos(-240, _posy->at(0)/10, _posz->at(0)/10); */
+          fitTrack.getCardinalRep()->extrapolateToPoint(mystate,fPos);
+          // > 
+          // > // print position/momentum after extrapolation
+          TVector3 exPos = mystate.getPos();
+          exPos.Print();
+          mom2 = fitTrack.getCardinalRep()->getMom(mystate);
+          mom2.Print();
+          float chi = fitTrack.getFitStatus()->getChi2();
+          float ndf = fitTrack.getFitStatus()->getNdf();
 
           if (iEvent < 1000) {
               // add track to event display
@@ -235,19 +245,23 @@ int main() {
 
           float res = mom2[0]-2;
           residual->Fill(res);
+          chiplot->Fill(chi/ndf);
 
-      }
-  }// end loop over events
+          }
+      }// end loop over events
 
-  TCanvas* c1 = new TCanvas();
-  residual->Draw();
-  c1->SaveAs("residual.pdf");
-  delete c1;
-  delete fitter;
+      TCanvas* c1 = new TCanvas();
+      residual->Draw();
+      c1->SaveAs("residual.pdf");
+      c1->Clear();
+      chiplot->Draw();
+      c1->SaveAs("chiplot.pdf");
+      delete c1;
+      delete fitter;
 
 
-  // open event display
-  display->open();
+      // open event display
+      display->open();
 
 }
 

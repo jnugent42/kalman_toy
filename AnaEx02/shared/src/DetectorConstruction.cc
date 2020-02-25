@@ -65,6 +65,8 @@
 #include "G4ChordFinder.hh"
 #include <iostream>
 
+#include "G4GDMLParser.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4ThreadLocal
@@ -99,6 +101,9 @@ DetectorConstruction::DetectorConstruction()
   SetAbsorberMaterial("G4_POLYPROPYLENE");
   SetAbsorber2Material("G4_Fe");
   SetGapMaterial("G4_AIR");
+  /* SetAbsorberMaterial("G4_Galactic"); */
+  /* SetAbsorber2Material("G4_Galactic"); */
+  /* SetGapMaterial("G4_Galactic"); */
   
   // create commands for interactive definition of the calorimeter
   fDetectorMessenger = new DetectorMessenger(this);
@@ -123,13 +128,10 @@ void DetectorConstruction::DefineMaterials()
 // use G4-NIST materials data base
 //
 G4NistManager* man = G4NistManager::Instance();
-fDefaultMaterial = man->FindOrBuildMaterial("G4_AIR");
-man->FindOrBuildMaterial("G4_Pb");
+fDefaultMaterial = man->FindOrBuildMaterial("G4_Galactic");
 man->FindOrBuildMaterial("G4_Fe");
-man->FindOrBuildMaterial("G4_lAr");
-man->FindOrBuildMaterial("G4_Galactic");
-man->FindOrBuildMaterial("G4_POLYPROPYLENE");
 man->FindOrBuildMaterial("G4_AIR");
+man->FindOrBuildMaterial("G4_POLYPROPYLENE");
 
 // print table
 //
@@ -194,27 +196,27 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
   //                                 
   // Layer
   //
-      fSolidLayer = new G4Box("Layer",                        //its name
-                       fLayerThickness/2,fCalorSizeYZ/2,fCalorSizeYZ/2); //size
+      /* fSolidLayer = new G4Box("Layer",                        //its name */
+      /*                  fLayerThickness/2,fCalorSizeYZ/2,fCalorSizeYZ/2); //size */
                        
-      fLogicLayer = new G4LogicalVolume(fSolidLayer,        //its solid
-                                       fDefaultMaterial,    //its material
-                                       "Layer");            //its name
-      if (fNbOfLayers > 1)                                      
-        fPhysiLayer = new G4PVReplica("Layer",              //its name
-                                     fLogicLayer,           //its logical volume
-                                     fLogicCalor,           //its mother
-                                     kXAxis,              //axis of replication
-                                     fNbOfLayers,           //number of replica
-                                     fLayerThickness);      //witdth of replica
-      else
-        fPhysiLayer = new G4PVPlacement(0,                  //no rotation
-                                     G4ThreeVector(),       //at (0,0,0)
-                                     fLogicLayer,           //its logical volume
-                                     "Layer",               //its name
-                                     fLogicCalor,           //its mother  volume
-                                     false,               //no boolean operation
-                                     0);                    //copy number     
+      /* fLogicLayer = new G4LogicalVolume(fSolidLayer,        //its solid */
+      /*                                  fDefaultMaterial,    //its material */
+      /*                                  "Layer");            //its name */
+      /* if (fNbOfLayers > 1) */                                      
+      /*   fPhysiLayer = new G4PVReplica("Layer",              //its name */
+      /*                                fLogicLayer,           //its logical volume */
+      /*                                fLogicCalor,           //its mother */
+      /*                                kXAxis,              //axis of replication */
+      /*                                fNbOfLayers,           //number of replica */
+      /*                                fLayerThickness);      //witdth of replica */
+      /* else */
+      /*   fPhysiLayer = new G4PVPlacement(0,                  //no rotation */
+      /*                                G4ThreeVector(),       //at (0,0,0) */
+      /*                                fLogicLayer,           //its logical volume */
+      /*                                "Layer",               //its name */
+      /*                                fLogicCalor,           //its mother  volume */
+      /*                                false,               //no boolean operation */
+      /*                                0);                    //copy number */     
     }                                   
   
   //                               
@@ -229,15 +231,16 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
       fLogicAbsorber = new G4LogicalVolume(fSolidAbsorber,    //its solid
                                             fAbsorberMaterial, //its material
                                             "poly");//fAbsorberMaterial->GetName());//name
-                                                
+    for(int i=0; i<20; i++){                                            
       fPhysiAbsorber = new G4PVPlacement(0,                   //no rotation
-                          G4ThreeVector(-fGapThickness/2-fAbsorberThickness/2,0.,0.),  //its position
+                          G4ThreeVector(-2390+i*240,0.,0.),  //its position
                                         fLogicAbsorber,     //its logical volume
-                                        fAbsorberMaterial->GetName(), //its name
-                                        fLogicLayer,          //its mother
+                                        "poly", //its name
+                                        fLogicCalor,          //its mother
                                         false,               //no boulean operat
-                                        0);                   //copy number
+                                        i);                   //copy number
                                         
+    }
     }
   
   //                               
@@ -253,14 +256,16 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
                                             fAbsorber2Material, //its material
                                             "iron");//fAbsorber2Material->GetName());//name
                                                 
+    for(int i=0; i<20; i++){                                            
       fPhysiAbsorber2 = new G4PVPlacement(0,                   //no rotation
-                          G4ThreeVector(fGapThickness/2+fAbsorber2Thickness/2,0.,0.),  //its position
+                          G4ThreeVector(-2390+fAbsorberThickness/2+fGapThickness+fAbsorber2Thickness/2+i*240,0.,0.),  //its position
                                         fLogicAbsorber2,     //its logical volume
-                                        fAbsorber2Material->GetName(), //its name
-                                        fLogicLayer,          //its mother
+                                        "Fe", //its name
+                                        fLogicCalor,          //its mother
                                         false,               //no boulean operat
-                                        0);                   //copy number
+                                        i);                   //copy number
                                         
+    }
     }
   //                                 
   // Gap
@@ -275,14 +280,15 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
                                            fGapMaterial,
                                            fGapMaterial->GetName());
                                            
+    for(int i=0; i<20; i++){                                            
       fPhysiGap = new G4PVPlacement(0,                      //no rotation
-               G4ThreeVector(0,0.,0.),   //its position
-               /* G4ThreeVector(fAbsorberThickness/2,0.,0.),   //its position */
-                                   fLogicGap,               //its logical volume
+               G4ThreeVector(-2390+fAbsorberThickness/2+fGapThickness/2+i*240,0.,0.),   //its position
+                                   fLogicCalor,               //its logical volume
                                    fGapMaterial->GetName(), //its name
                                    fLogicLayer,             //its mother
                                    false,                   //no boulean operat
-                                   0);                      //copy number
+                                   i);                      //copy number
+    }
     }
     
   PrintCalorParameters();     
@@ -299,6 +305,9 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
   //
   //always return the physical World
   //
+  G4GDMLParser parser;
+  parser.Write("myGDML.gdml",fPhysiWorld);
+
   return fPhysiWorld;
 }
 
@@ -453,6 +462,8 @@ void DetectorConstruction::ConstructSDandField()
                                    allLocal );
    /* fLogicCalor->SetFieldManager(fEmFieldSetup.Get()->GetLocalFieldManager(), */
                                    /* allLocal ); */
+  /* G4GDMLParser parser; */
+  /* parser.Write("myGDML.gdml",fPhysiWorld); */
 
 
   }

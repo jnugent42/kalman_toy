@@ -129,7 +129,6 @@ B4cCalorHitsCollection*  EventAction::GetHitsCollection(G4int hcID, const G4Even
         G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
         for (G4int i=0;i<absoHC->entries();i++) {
-            G4cout << "1" << G4endl;
             /* if ((*absoHC)[i]->GetParentID()==0){ */
                 G4ThreeVector position = (*absoHC)[i]->GetPosition();
                 G4ThreeVector momentum = (*absoHC)[i]->GetMomentum(); 

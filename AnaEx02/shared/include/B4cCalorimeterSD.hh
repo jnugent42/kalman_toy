@@ -60,6 +60,7 @@ class B4cCalorimeterSD : public G4VSensitiveDetector
     virtual void   Initialize(G4HCofThisEvent* hitCollection);
     virtual G4bool ProcessHits(G4Step* step, G4TouchableHistory* history);
     virtual void   EndOfEvent(G4HCofThisEvent* hitCollection);
+    int counter = 0;
 
   private:
     B4cCalorHitsCollection* fHitsCollection;

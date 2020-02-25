@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+
+  <define/>
+
+  <materials>
+    <isotope N="12" Z="6" name="C120x15eedf0">
+      <atom unit="g/mole" value="12"/>
+    </isotope>
+    <isotope N="13" Z="6" name="C130x15eedb0">
+      <atom unit="g/mole" value="13.0034"/>
+    </isotope>
+    <element name="C0x15ef2f0">
+      <fraction n="0.9893" ref="C120x15eedf0"/>
+      <fraction n="0.0107" ref="C130x15eedb0"/>
+    </element>
+    <isotope N="1" Z="1" name="H10x15e42b0">
+      <atom unit="g/mole" value="1.00782503081372"/>
+    </isotope>
+    <isotope N="2" Z="1" name="H20x15e4360">
+      <atom unit="g/mole" value="2.01410199966617"/>
+    </isotope>
+    <element name="H0x15e4050">
+      <fraction n="0.999885" ref="H10x15e42b0"/>
+      <fraction n="0.000115" ref="H20x15e4360"/>
+    </element>
+    <material name="G4_POLYPROPYLENE0x15f00b0" state="solid">
+      <T unit="K" value="293.15"/>
+      <MEE unit="eV" value="56.5"/>
+      <D unit="g/cm3" value="0.9"/>
+      <fraction n="0.856281712255198" ref="C0x15ef2f0"/>
+      <fraction n="0.143718287744802" ref="H0x15e4050"/>
+    </material>
+    <isotope N="54" Z="26" name="Fe540x15eeac0">
+      <atom unit="g/mole" value="53.9396"/>
+    </isotope>
+    <isotope N="56" Z="26" name="Fe560x15eeb60">
+      <atom unit="g/mole" value="55.9349"/>
+    </isotope>
+    <isotope N="57" Z="26" name="Fe570x15eebd0">
+      <atom unit="g/mole" value="56.9354"/>
+    </isotope>
+    <isotope N="58" Z="26" name="Fe580x15eec40">
+      <atom unit="g/mole" value="57.9333"/>
+    </isotope>
+    <element name="Fe0x15ee860">
+      <fraction n="0.05845" ref="Fe540x15eeac0"/>
+      <fraction n="0.91754" ref="Fe560x15eeb60"/>
+      <fraction n="0.02119" ref="Fe570x15eebd0"/>
+      <fraction n="0.00282" ref="Fe580x15eec40"/>
+    </element>
+    <material name="G4_Fe0x15ee760" state="solid">
+      <T unit="K" value="293.15"/>
+      <MEE unit="eV" value="286"/>
+      <D unit="g/cm3" value="7.874"/>
+      <fraction n="1" ref="Fe0x15ee860"/>
+    </material>
+    <material name="G4_Galactic0x15e3f30" state="gas">
+      <T unit="K" value="2.73"/>
+      <P unit="pascal" value="3e-18"/>
+      <MEE unit="eV" value="21.8"/>
+      <D unit="g/cm3" value="1e-25"/>
+      <fraction n="1" ref="H0x15e4050"/>
+    </material>
+  </materials>
+
+  <solids>
+    <box lunit="mm" name="Absorber0x1730260" x="20" y="2000" z="2000"/>
+    <box lunit="mm" name="Absorber20x1730e20" x="20" y="2000" z="2000"/>
+    <box lunit="mm" name="Calorimeter0x17300b0" x="4800" y="2000" z="2000"/>
+    <box lunit="mm" name="World0x172ff70" x="5760" y="2400" z="2400"/>
+  </solids>
+
+  <structure>
+    <volume name="poly0x17302f0">
+      <materialref ref="G4_POLYPROPYLENE0x15f00b0"/>
+      <solidref ref="Absorber0x1730260"/>
+    </volume>
+    <volume name="iron0x1730eb0">
+      <materialref ref="G4_Fe0x15ee760"/>
+      <solidref ref="Absorber20x1730e20"/>
+    </volume>
+    <volume name="Calorimeter0x1730140">
+      <materialref ref="G4_Galactic0x15e3f30"/>
+      <solidref ref="Calorimeter0x17300b0"/>
+      <physvol name="poly0x17303a0">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x17303a0_pos" unit="mm" x="-2390" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730430">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730430_pos" unit="mm" x="-2150" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x17304c0">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x17304c0_pos" unit="mm" x="-1910" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730560">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730560_pos" unit="mm" x="-1670" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x17305d0">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x17305d0_pos" unit="mm" x="-1430" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730660">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730660_pos" unit="mm" x="-1190" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x17306d0">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x17306d0_pos" unit="mm" x="-950" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730740">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730740_pos" unit="mm" x="-710" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x17307b0">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x17307b0_pos" unit="mm" x="-470" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x17308b0">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x17308b0_pos" unit="mm" x="-230" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730920">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730920_pos" unit="mm" x="10" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730990">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730990_pos" unit="mm" x="250" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730a00">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730a00_pos" unit="mm" x="490" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730a70">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730a70_pos" unit="mm" x="730" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730ae0">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730ae0_pos" unit="mm" x="970" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730b50">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730b50_pos" unit="mm" x="1210" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730bc0">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730bc0_pos" unit="mm" x="1450" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730820">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730820_pos" unit="mm" x="1690" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730d40">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730d40_pos" unit="mm" x="1930" y="0" z="0"/>
+      </physvol>
+      <physvol name="poly0x1730db0">
+        <volumeref ref="poly0x17302f0"/>
+        <position name="poly0x1730db0_pos" unit="mm" x="2170" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1730f60">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1730f60_pos" unit="mm" x="-2170" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1730fd0">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1730fd0_pos" unit="mm" x="-1930" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1731040">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1731040_pos" unit="mm" x="-1690" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x17310b0">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x17310b0_pos" unit="mm" x="-1450" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1731120">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1731120_pos" unit="mm" x="-1210" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1731190">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1731190_pos" unit="mm" x="-970" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1731200">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1731200_pos" unit="mm" x="-730" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1731270">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1731270_pos" unit="mm" x="-490" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x17312e0">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x17312e0_pos" unit="mm" x="-250" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1731350">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1731350_pos" unit="mm" x="-10" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x17313c0">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x17313c0_pos" unit="mm" x="230" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1731430">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1731430_pos" unit="mm" x="470" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x17314a0">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x17314a0_pos" unit="mm" x="710" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1730c00">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1730c00_pos" unit="mm" x="950" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1730c70">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1730c70_pos" unit="mm" x="1190" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x173ffa0">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x173ffa0_pos" unit="mm" x="1430" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x173ffe0">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x173ffe0_pos" unit="mm" x="1670" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1740050">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1740050_pos" unit="mm" x="1910" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x17400c0">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x17400c0_pos" unit="mm" x="2150" y="0" z="0"/>
+      </physvol>
+      <physvol name="Fe0x1740130">
+        <volumeref ref="iron0x1730eb0"/>
+        <position name="Fe0x1740130_pos" unit="mm" x="2390" y="0" z="0"/>
+      </physvol>
+    </volume>
+    <volume name="World0x1730000">
+      <materialref ref="G4_Galactic0x15e3f30"/>
+      <solidref ref="World0x172ff70"/>
+      <physvol name="Calorimeter0x17301f0">
+        <volumeref ref="Calorimeter0x1730140"/>
+      </physvol>
+    </volume>
+  </structure>
+
+  <setup name="Default" version="1.0">
+    <world ref="World0x1730000"/>
+  </setup>
+
+</gdml>

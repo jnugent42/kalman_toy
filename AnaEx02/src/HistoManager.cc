@@ -176,7 +176,7 @@ void HistoManager::FillNtuple2(std::vector<float>* posx, std::vector<float>* pos
         /* G4cout << "posx->size " << posx->size() << G4endl; */     
  for(int i=0;i<posx->size();i++){
      if (posx->at(i)!=0) _posx->push_back(posx->at(i));
-     if (posx->at(i)!=0) G4cout << "_posx->at(i) " << _posx->at(i) << G4endl;     
+     /* if (posx->at(i)!=0) G4cout << "_posx->at(i) " << _posx->at(i) << G4endl; */     
      /* _posx->push_back(posx->at(i)); */
      /* G4cout << "_posx->at(i) " << _posx->at(i) << G4endl; */     
 }

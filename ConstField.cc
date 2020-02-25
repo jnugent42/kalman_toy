@@ -28,7 +28,7 @@ namespace genfit {
 TVector3 ConstField::get(const TVector3& pos) const {
     
     TVector3 tmp(0,0,0);
-    std::string hold = "b";
+    std::string hold = "F";
     std::string name2(1, gGeoManager->FindNode(pos[0],pos[1],pos[2])->GetName()[0]);
     name2.c_str();
     if (name2.c_str()==hold) tmp.SetZ(15);
@@ -39,12 +39,14 @@ TVector3 ConstField::get(const TVector3& pos) const {
 void ConstField::get(const double& posX, const double& posY, const double& posZ, double& Bx, double& By, double& Bz) const {
 
     TVector3 tmp(0,0,15);
-    std::string hold = "b";
+    std::string hold = "F";
     std::string name2;
     std::string name3(1, gGeoManager->FindNode(posX,posY,posZ)->GetName()[0]);
     name2 = name3;
     name2.c_str();
     if (name2.c_str()==hold){
+        /* std::cout << "posX " << posX << std::endl; */
+        /* std::cout << "1.5 T" << std::endl; */
         Bx = tmp.X();
         By = tmp.Y();
         Bz = tmp.Z();

@@ -84,8 +84,10 @@ G4bool B4cCalorimeterSD::ProcessHits(G4Step* step,
     G4ThreeVector position;
   // energy deposit
   G4double edep = step->GetTotalEnergyDeposit();
-/* G4cout << step->GetTrack()->GetPosition()[0] << G4endl; */
-  position = step->GetTrack()->GetPosition(); 
+  /* position = step->GetTrack()->GetPosition(); */ 
+  position = step->GetPreStepPoint()->GetPosition(); 
+  G4ThreeVector preposition = step->GetPreStepPoint()->GetPosition(); 
+  G4ThreeVector postposition = step->GetPostStepPoint()->GetPosition(); 
   G4int parent = step->GetTrack()->GetParentID(); 
 
   if (parent==0){
@@ -101,10 +103,17 @@ G4bool B4cCalorimeterSD::ProcessHits(G4Step* step,
     = (G4TouchableHistory*)(step->GetPreStepPoint()->GetTouchable());
     
   // Get calorimeter cell id 
-  G4int layerNumber = touchable->GetReplicaNumber(1);
-  
+  G4int layerNumber = touchable->GetCopyNumber();
+
+  /* std::cout << "preposition[0] " << preposition[0] << std::endl; */
+  /* std::cout << "postposition[0] " << postposition[0] << std::endl; */
+  /* std::cout << "stepLength " << stepLength << std::endl; */
+  /* std::cout << "edep " << edep << std::endl; */
+  /* std::cout << "layernumber " << layerNumber << std::endl; */
+
   // Get hit accounting data for this cell
   B4cCalorHit* hit = (*fHitsCollection)[layerNumber];
+  
   if ( ! hit ) {
     G4ExceptionDescription msg;
     msg << "Cannot access hit " << layerNumber; 
@@ -116,11 +125,14 @@ G4bool B4cCalorimeterSD::ProcessHits(G4Step* step,
   B4cCalorHit* hitTotal 
     = (*fHitsCollection)[fHitsCollection->entries()-1];
   
+/* std::cout << "pos "  << position[0] << " " << position[1] << " " << position[2] << std::endl; */
   // Add values
   hit->Add(edep, stepLength);
   hitTotal->Add(edep, stepLength); 
-  hit->SetPosition(position);
+  hit->SetPosition(postposition);
   hit->SetParentID(parent);
+  counter++;
+
   }   
   return true;
 }
