@@ -86,7 +86,8 @@ DetectorConstruction::DetectorConstruction()
  fSolidAbsorber2(0),fLogicAbsorber2(0),fPhysiAbsorber2(0), fAbsorber2Material(0)
 {
   // default parameter values of the calorimeter
-  fAbsorberThickness = 20.*mm;
+  /* fAbsorberThickness = 20.*mm; */
+  fAbsorberThickness = 20*mm;
   fAbsorber2Thickness = 20.*mm;
   fGapThickness      = 200.*mm;
   fNbOfLayers        = 20;
@@ -152,7 +153,10 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
 
   // complete the Calor parameters definition
   ComputeCalorParameters();
-   
+  
+  float layer_thickness = fAbsorberThickness+fAbsorber2Thickness+fGapThickness;
+  float half_thickness = -layer_thickness*(fNbOfLayers/2);
+
   //     
   // World
   //
@@ -233,7 +237,8 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
                                             "poly");//fAbsorberMaterial->GetName());//name
     for(int i=0; i<20; i++){                                            
       fPhysiAbsorber = new G4PVPlacement(0,                   //no rotation
-                          G4ThreeVector(-2390+i*240,0.,0.),  //its position
+                          G4ThreeVector(half_thickness+i*layer_thickness,0.,0.),  //its position
+                          /* G4ThreeVector(-2390+i*240,0.,0.),  //its position */
                                         fLogicAbsorber,     //its logical volume
                                         "poly", //its name
                                         fLogicCalor,          //its mother
@@ -258,7 +263,8 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
                                                 
     for(int i=0; i<20; i++){                                            
       fPhysiAbsorber2 = new G4PVPlacement(0,                   //no rotation
-                          G4ThreeVector(-2390+fAbsorberThickness/2+fGapThickness+fAbsorber2Thickness/2+i*240,0.,0.),  //its position
+                          G4ThreeVector(half_thickness+fAbsorberThickness/2+fGapThickness+fAbsorber2Thickness/2+i*layer_thickness,0.,0.),  //its position
+                          /* G4ThreeVector(-2390+fAbsorberThickness/2+fGapThickness+fAbsorber2Thickness/2+i*240,0.,0.),  //its position */
                                         fLogicAbsorber2,     //its logical volume
                                         "Fe", //its name
                                         fLogicCalor,          //its mother
@@ -282,7 +288,8 @@ G4VPhysicalVolume* DetectorConstruction::ConstructCalorimeter()
                                            
     for(int i=0; i<20; i++){                                            
       fPhysiGap = new G4PVPlacement(0,                      //no rotation
-               G4ThreeVector(-2390+fAbsorberThickness/2+fGapThickness/2+i*240,0.,0.),   //its position
+               /* G4ThreeVector(-2390+fAbsorberThickness/2+fGapThickness/2+i*240,0.,0.),   //its position */
+               G4ThreeVector(half_thickness+fAbsorberThickness/2+fGapThickness/2+i*layer_thickness,0.,0.),   //its position
                                    fLogicCalor,               //its logical volume
                                    fGapMaterial->GetName(), //its name
                                    fLogicLayer,             //its mother

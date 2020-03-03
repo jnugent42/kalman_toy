@@ -81,7 +81,7 @@ F03FieldSetup::F03FieldSetup()
                                                        0.0));
   fLocalMagneticField = new G4UniformMagField(G4ThreeVector(0.0*tesla,
                                                             0.0, // 0.5*tesla,
-                                                            1.5*tesla));
+                                                            15*tesla));
 
   fFieldMessenger = new F03FieldMessenger(this);
  

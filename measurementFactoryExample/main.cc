@@ -97,7 +97,7 @@ int main() {
   factory.addProducer(myDetId, &myProducer);
 
 
-  TH1D* residual = new TH1D("residual", "residual", 99, -2, 2);
+  TH1D* residual = new TH1D("residual", "residual", 199, -2, 2);
   TH1D* chiplot = new TH1D("chiplot", "chiplot", 100, 0, 50);
   TFile *inFile=new TFile("AnaEx02.root","READONLY");
   TTree *tree=(TTree*)inFile->Get("103");
@@ -226,7 +226,7 @@ int main() {
           mom2.Print();
           // > 
           // > // extrapolate to the first layer:
-          TVector3 fPos((_posx->at(0)/10), _posy->at(0)/10, _posz->at(0)/10);
+          TVector3 fPos((-30+_posx->at(0)/10), _posy->at(0)/10, _posz->at(0)/10);
           /* TVector3 fPos(-240, _posy->at(0)/10, _posz->at(0)/10); */
           fitTrack.getCardinalRep()->extrapolateToPoint(mystate,fPos);
           // > 

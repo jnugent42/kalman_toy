@@ -29,7 +29,13 @@ void makeGeom()
    polyMat->SetDensity(0.905);
    polyMat->SetRadLen(44.77);
    TGeoMedium *_poly = new TGeoMedium("poly",medInd++,polyMat,mPar);
+   /* TGeoMaterial *_siliconMat = new TGeoMaterial("siliconMat",28.0855,14.,2.329); */
+   /* _siliconMat->SetRadLen(1.);//calc automatically, need this for elemental mats. */
+   /* TGeoMedium *_silicon = new TGeoMedium("silicon",medInd++,_siliconMat,mPar); */
 
+   /* TGeoMaterial *_siliconMat2 = new TGeoMaterial("siliconMat2",280.0855,14.,2.329); */
+   /* _siliconMat2->SetRadLen(100.);//calc automatically, need this for elemental mats. */
+   /* TGeoMedium *_silicon2 = new TGeoMedium("air",medInd++,_siliconMat2,mPar); */
    TGeoMixture *_airMat = new TGeoMixture("airMat",3);
    _airMat->AddElement(14.01,7.,.78);
    _airMat->AddElement(16.00,8.,.21);
@@ -62,17 +68,29 @@ void makeGeom()
    top->SetTransparency(50);
 
    double thickness(1);
+   double thickness2(100);
    double distance = 24;
+   /* double distance = 402; */
 
    for (int i=0; i<20; ++i){
-     TGeoVolume *redBullCan = gGeoManager->MakeBox("redBullCan", poly, thickness, 100, 100);//, 90., 270.);
+     /* TGeoVolume *redBullCan = gGeoManager->MakeTube("redBullCan", sil, i*distance, i*distance+thickness, 20.);//, 90., 270.); */
+     TGeoVolume *redBullCan = gGeoManager->MakeBox("redBullCan", vacuum, thickness, 100, 100);//, 90., 270.);
      redBullCan->SetLineColor(kRed);
+     /* top->AddNode(redBullCan, i, gGeoIdentity); */
      top->AddNode(redBullCan, i, new TGeoTranslation(-239+(distance*i),0,0));
+     /* top->AddNode(redBullCan, i, new TGeoTranslation(-401+(distance*i),0,0)); */
    }
    for (int i=0; i<20; ++i){
-     TGeoVolume *blueBullCan = gGeoManager->MakeBox("blueBullCan", iron, thickness, 100, 100);//, 90., 270.);
+     TGeoVolume *blueBullCan = gGeoManager->MakeBox("blueBullCan", vacuum, thickness, 100, 100);//, 90., 270.);
      blueBullCan->SetLineColor(kBlue);
      top->AddNode(blueBullCan, i, new TGeoTranslation(-217+(distance*i),0,0));
+     /* top->AddNode(blueBullCan, i, new TGeoTranslation(-300+(distance*i),0,0)); */
+   }
+   for (int i=0; i<2; ++i){
+     TGeoVolume *greenBullCan = gGeoManager->MakeBox("greenBullCan", vacuum, thickness2, 100, 100);//, 90., 270.);
+     greenBullCan->SetLineColor(kGreen);
+     /* top->AddNode(blueBullCan, i, new TGeoTranslation(-217+(distance*i),0,0)); */
+     /* top->AddNode(greenBullCan, i, new TGeoTranslation(-50+(distance*i),0,0)); */
    }
 
 
