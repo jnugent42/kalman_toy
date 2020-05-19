@@ -1,3 +1,4 @@
+
 /* Copyright 2008-2010, Technische Universitaet Muenchen,
    Authors: Christian Hoeppner & Sebastian Neubert & Johannes Rauch
 
